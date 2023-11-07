@@ -7,17 +7,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css">
     <link rel="stylesheet" href="add-style.css">
+    <script src="data.js"></script>
 </head>
 <body>
     <div class="section">
-    <form action="script.js" onsubmit="submitEntry()">
+    <form action="data.js">
         <div class="field">
             <label class="label" for="unit">Unit</label>
             <div class="control has-icons-left">
-                <input class="input" type="text" id="unit" placeholder="123 Air" required>
+                <input class="input" type="text" id="unitName" placeholder="123 Air" required>
                 <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
             </div>
-        </div>   
+        </div>
         <div class="field">
             <label class="label" for="standing">10m Standing Score</label>
             <div class="control">
@@ -52,10 +53,9 @@
                 </label>
             </div>
         </div>
-          
         <div class="field is-grouped">
             <div class="control">
-                <input class="button is-link" type="submit" value="Submit">
+                <input class="button is-link" type="button" value="Submit" onclick="submitEntry(document.querySelector('#unitName').value, document.querySelector('#standing').value, document.querySelector('#prone').value)">
             </div>
         </div>
     </form>

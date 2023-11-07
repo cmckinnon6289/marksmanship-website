@@ -1,9 +1,10 @@
 let tableOrder = []
 
-function submitEntry() {
-    const unit = document.querySelector("#unit").value;
-    const standing = document.querySelector("#standing").value;
-    const prone = document.querySelector("#prone").value;
+function submitEntry(u,s,p) {
+    console.log("REACHED");
+    const unit = u.textContent;
+    const standing = Number(s);
+    const prone = Number(p);
     newEntry(unit, standing, prone);
 }
 
@@ -23,15 +24,19 @@ function newEntry(unit, standing, prone) {
             else return null;
         }
     }
-    team.getRanking()
+    console.log(team)
+    team.rank = getRanking(team)
+    localStorage.setItem(`#${team.rank}`, JSON.stringify(team))
     tableOrder.push(team);
     sortTable()
+    console.log(tableOrder)
 }
 
-function getRanking() {
+function getRanking(newTeam) {
     let betterTeams = tableOrder.filter(function(extTeam) {
-        return extTeam.overall > this.overall;
+        return extTeam.overall > newTeam.overall;
     })
+    console.log(betterTeams.length);
     return betterTeams.length+1;
 }
 
@@ -50,14 +55,24 @@ function sortTable(stat, atTop) {
     }    
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('form').addEventListener('submit', function(event) {
-        console.log("fired")
-        let requiredInputs = document.querySelectorAll('input[required]');
-        requiredInputs.forEach(function(input) {
-            if (input.value.trim() === '') {
-                input.classList.add('is-danger');
-            }
-        });
-    });
-});
+function removeTeam(rank) {
+    sortTable();
+    tableOrder.splice(rank-1,1);
+    tableOrder.forEach((team,i) => {
+        team.rank = i+1;
+    })
+}
+
+function initArray() {
+    for (var i = 1; i <= localStorage.length; i++) {
+        let team = localStorage.getItem(`#${i}`);
+        team = JSON.parse(team);
+        if (!team) {
+            continue;
+        } else {
+            tableOrder.push(team);
+        }
+    }
+}
+
+initArray()
